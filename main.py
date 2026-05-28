@@ -10,7 +10,7 @@ from tools.feature_code_researcher import research_feature_code
 from tools.dev_journal_writer import generate_final_portfolio,save_dev_journal
 from tools.project_reader import read_project_files_from_zip
 from tools.file_portfolio_generator import generate_all_file_portfolios
-from tools.git_helper import get_git_status,get_git_diff_summary,generate_commit_message,commit_changes,push_to_github
+
 
 load_dotenv()
 
@@ -147,42 +147,4 @@ with tab3:
 
             st.success(f"작업일지 저장 완료: {file_path}")
     
-        st.markdown("---")
-
-        st.markdown("## Git 커밋")
-
-        if st.button("커밋 메시지 생성"):
-
-            with st.spinner("커밋 메시지 생성 중..."):
-
-                commit_message = generate_commit_message(
-                    st.session_state["dev_journal_preview"]
-                )
-
-            st.session_state["commit_message"] = commit_message
-
-        if "commit_message" in st.session_state:
-
-            st.markdown("### 추천 커밋 메시지")
-
-            st.code(
-                st.session_state["commit_message"]
-            )
-
-            if st.button("Git 커밋 실행"):
-
-                with st.spinner("Git 커밋 실행 중..."):
-
-                    commit_result = commit_changes(
-                        st.session_state["commit_message"]
-                    )
-
-                st.code(commit_result)
-                
-                if st.button("GitHub에 푸시"):
-
-                    with st.spinner("GitHub에 푸시 중..."):
-
-                        push_result = push_to_github()
-
-                    st.code(push_result)
+       
