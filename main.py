@@ -5,14 +5,11 @@ from tools.request_analyzer import analyze_request
 from tools.file_structure_generator import generate_file_structure
 from tools.missing_checker import check_missing_parts
 from tools.report_writer import save_report
-
 from tools.feature_code_researcher import research_feature_code
 from tools.dev_journal_writer import generate_final_portfolio,save_dev_journal
 from tools.project_reader import read_project_files_from_zip
 from tools.file_portfolio_generator import generate_all_file_portfolios
-
-
-load_dotenv()
+from tools.project_scaffolder import create_project_skeleton, zip_project_folder
 
 st.set_page_config(
     page_title="외주 개발 에이전트",
@@ -62,6 +59,29 @@ with tab1:
 
             st.markdown("## 2. 추천 폴더/파일 구조")
             st.code(file_structure)
+
+            if st.button("프로젝트 뼈대 생성"):
+
+                project_dir = create_project_skeleton(
+                    file_structure
+                )
+
+                zip_path = zip_project_folder(
+                    project_dir
+                )
+
+                st.success(
+                    f"프로젝트 뼈대 생성 완료: {project_dir}"
+                )
+
+                with open(zip_path, "rb") as f:
+
+                    st.download_button(
+                        label="생성된 프로젝트 ZIP 다운로드",
+                        data=f,
+                        file_name=os.path.basename(zip_path),
+                        mime="application/zip"
+                    )
             
             st.markdown("## 3. 누락 검사")
             st.markdown(missing)
@@ -147,4 +167,4 @@ with tab3:
 
             st.success(f"작업일지 저장 완료: {file_path}")
     
-       
+     
