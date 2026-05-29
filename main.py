@@ -11,6 +11,7 @@ from tools.dev_journal_writer import generate_final_portfolio,save_dev_journal
 from tools.project_reader import read_project_files_from_zip
 from tools.file_portfolio_generator import generate_all_file_portfolios
 from tools.project_scaffolder import create_project_skeleton, zip_project_folder
+from tools.project_type_detector import detect_project_type
 
 st.set_page_config(
     page_title="외주 개발 에이전트",
@@ -37,6 +38,11 @@ with tab1:
         if not client_request.strip():
             st.warning("클라이언트 요청 내용을 입력해주세요.")
         else:
+            with st.spinner("프로젝트 유형 분석 중..."):
+                project_type = detect_project_type(
+                    client_request
+                )
+            
             with st.spinner("요청 분석 중..."):
                 analysis = analyze_request(client_request)
 
@@ -53,11 +59,19 @@ with tab1:
                 missing
             )
 
+            st.session_state["project_type"] = project_type
             st.session_state["analysis"] = analysis
             st.session_state["file_structure"] = file_structure
             st.session_state["missing"] = missing
             st.session_state["report_path"] = file_path
 
+        st.markdown("## 0. 프로젝트 유형 분석")
+
+        st.markdown(
+            st.session_state["project_type"]
+        )
+        
+        
     if "analysis" in st.session_state:
         st.success(f"리포트 저장 완료: {st.session_state['report_path']}")
 
