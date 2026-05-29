@@ -69,15 +69,7 @@ with tab1:
               
     if "analysis" in st.session_state:
         
-        if "report_content" in st.session_state:
-            
-            st.download_button(
-                label="분석 리포트 다운로드 (.md)",
-                data=st.session_state["report_content"],
-                file_name="request_analysis_report.md",
-                mime="text/markdown",
-                key="download_analysis_report"
-            )
+
 
         if "project_type" in st.session_state:
             st.markdown("## 0. 프로젝트 유형 분석")
