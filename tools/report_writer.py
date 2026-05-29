@@ -1,26 +1,33 @@
 from datetime import datetime
-import os
 
 
-def save_report(
+def make_report_content(
     client_request: str,
+    project_type: str,
     analysis: str,
     file_structure: str,
     missing: str
 ) -> str:
-    os.makedirs("reports", exist_ok=True)
 
-    now = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_path = f"reports/report_{now}.md"
+    created_at = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
 
-    content = f"""
-# 외주 개발 요청 분석 리포트
+    return f"""# 외주 요청 분석 리포트
+
+생성일시: {created_at}
 
 ---
 
-# 클라이언트 요청
+# 원본 요청
 
 {client_request}
+
+---
+
+# 프로젝트 유형 분석
+
+{project_type}
 
 ---
 
@@ -30,18 +37,15 @@ def save_report(
 
 ---
 
-# 추천 폴더/파일 구조
+# 추천 파일 구조
 
+```text
 {file_structure}
 
 ---
 
-# 누락 검사
+# 누락검사
 
 {missing}
 """
 
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(content)
-
-    return file_path

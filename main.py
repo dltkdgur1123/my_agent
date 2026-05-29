@@ -5,7 +5,7 @@ import os
 from tools.request_analyzer import analyze_request
 from tools.file_structure_generator import generate_file_structure
 from tools.missing_checker import check_missing_parts
-from tools.report_writer import save_report
+from tools.report_writer import make_report_content
 from tools.feature_code_researcher import research_feature_code
 from tools.dev_journal_writer import generate_final_portfolio,save_dev_journal
 from tools.project_reader import read_project_files_from_zip
@@ -52,18 +52,20 @@ with tab1:
             with st.spinner("누락 항목 검사 중..."):
                 missing = check_missing_parts(client_request, analysis)
 
-            file_path = save_report(
+            st.session_state["analysis"] = analysis
+            st.session_state["file_structure"] = file_structure
+            st.session_state["missing"] = missing
+            
+            report_content = make_report_content(
                 client_request,
+                st.session_state["project_type"],
                 analysis,
                 file_structure,
                 missing
             )
 
-            st.session_state["project_type"] = project_type
-            st.session_state["analysis"] = analysis
-            st.session_state["file_structure"] = file_structure
-            st.session_state["missing"] = missing
-            st.session_state["report_path"] = file_path
+            st.session_state["report_content"] = report_content
+
 
         st.markdown("## 0. 프로젝트 유형 분석")
 
@@ -97,6 +99,13 @@ with tab1:
                     file_name=os.path.basename(zip_path),
                     mime="application/zip"
                 )
+                
+            st.download_button(
+                label="분석 리포트 다운로드 (.md)",
+                data=st.session_state["report_content"],
+                file_name="request_analysis_report.md",
+                mime="text/markdown"
+            )
 
         st.markdown("## 3. 누락 검사")
         st.markdown(st.session_state["missing"])
