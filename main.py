@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import streamlit as st
+import os
 
 from tools.request_analyzer import analyze_request
 from tools.file_structure_generator import generate_file_structure
@@ -52,39 +53,39 @@ with tab1:
                 missing
             )
 
-            st.success(f"리포트 저장 완료: {file_path}")
+            st.session_state["analysis"] = analysis
+            st.session_state["file_structure"] = file_structure
+            st.session_state["missing"] = missing
+            st.session_state["report_path"] = file_path
 
-            st.markdown("## 1. 요청 분석")
-            st.markdown(analysis)
+    if "analysis" in st.session_state:
+        st.success(f"리포트 저장 완료: {st.session_state['report_path']}")
 
-            st.markdown("## 2. 추천 폴더/파일 구조")
-            st.code(file_structure)
+        st.markdown("## 1. 요청 분석")
+        st.markdown(st.session_state["analysis"])
 
-            if st.button("프로젝트 뼈대 생성"):
+        st.markdown("## 2. 추천 폴더/파일 구조")
+        st.code(st.session_state["file_structure"])
 
-                project_dir = create_project_skeleton(
-                    file_structure
+        if st.button("프로젝트 뼈대 생성"):
+            project_dir = create_project_skeleton(
+                st.session_state["file_structure"]
+            )
+
+            zip_path = zip_project_folder(project_dir)
+
+            st.success(f"프로젝트 뼈대 생성 완료: {project_dir}")
+
+            with open(zip_path, "rb") as f:
+                st.download_button(
+                    label="생성된 프로젝트 ZIP 다운로드",
+                    data=f,
+                    file_name=os.path.basename(zip_path),
+                    mime="application/zip"
                 )
 
-                zip_path = zip_project_folder(
-                    project_dir
-                )
-
-                st.success(
-                    f"프로젝트 뼈대 생성 완료: {project_dir}"
-                )
-
-                with open(zip_path, "rb") as f:
-
-                    st.download_button(
-                        label="생성된 프로젝트 ZIP 다운로드",
-                        data=f,
-                        file_name=os.path.basename(zip_path),
-                        mime="application/zip"
-                    )
-            
-            st.markdown("## 3. 누락 검사")
-            st.markdown(missing)
+        st.markdown("## 3. 누락 검사")
+        st.markdown(st.session_state["missing"])
 
 
 with tab2:
