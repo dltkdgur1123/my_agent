@@ -58,22 +58,15 @@ with tab1:
             
             report_content = make_report_content(
                 client_request,
-                st.session_state["project_type"],
+                "", # project_type 기능을 완성 후 이것을 넣는다.
                 analysis,
                 file_structure,
                 missing
             )
 
             st.session_state["report_content"] = report_content
-
-
-        st.markdown("## 0. 프로젝트 유형 분석")
-
-        st.markdown(
-            st.session_state["project_type"]
-        )
-        
-        
+      
+              
     if "analysis" in st.session_state:
         
         if "report_content" in st.session_state:
@@ -86,7 +79,14 @@ with tab1:
                 key="download_analysis_report"
             )
 
+        if "project_type" in st.session_state:
+            st.markdown("## 0. 프로젝트 유형 분석")
+            st.markdown(st.session_state["project_type"])
+
+
+
         st.markdown("## 1. 요청 분석")
+
         st.markdown(st.session_state["analysis"])
 
         st.markdown("## 2. 추천 폴더/파일 구조")
