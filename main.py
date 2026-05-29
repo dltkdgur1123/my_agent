@@ -75,6 +75,14 @@ with tab1:
         
         
     if "analysis" in st.session_state:
+        if "report_content" in st.session_state:
+            st.download_button(
+                label="분석 리포트 다운로드 (.md)",
+                data=st.session_state["report_content"],
+                file_name="request_analysis_report.md",
+                mime="text/markdown"
+            )
+        
         st.success(f"리포트 저장 완료: {st.session_state['report_path']}")
 
         st.markdown("## 1. 요청 분석")
