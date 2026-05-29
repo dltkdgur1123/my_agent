@@ -83,6 +83,7 @@ with tab1:
                 data=st.session_state["report_content"],
                 file_name="request_analysis_report.md",
                 mime="text/markdown"
+                key="download_analysis_report"
             )
 
         st.markdown("## 1. 요청 분석")
