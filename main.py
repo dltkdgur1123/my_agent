@@ -83,31 +83,41 @@ with tab1:
         st.markdown("## 2. 추천 폴더/파일 구조")
         st.code(st.session_state["file_structure"])
 
-        if st.button("프로젝트 뼈대 생성"):
-            project_dir = create_project_skeleton(
-                st.session_state["file_structure"]
-            )
+        # 프로젝트 뼈대 자동 생성
+        project_dir = create_project_skeleton(
+            st.session_state["file_structure"]
+        )
 
-            zip_path = zip_project_folder(project_dir)
+        zip_path = zip_project_folder(project_dir)
 
-            st.success(f"프로젝트 뼈대 생성 완료: {project_dir}")
+        # 세션에 저장
+        st.session_state["zip_path"] = zip_path
 
-            with open(zip_path, "rb") as f:
+        # ZIP 다운로드 버튼
+        if "zip_path" in st.session_state:
+
+            with open(st.session_state["zip_path"], "rb") as f:
+
                 st.download_button(
                     label="생성된 프로젝트 ZIP 다운로드",
                     data=f,
-                    file_name=os.path.basename(zip_path),
-                    mime="application/zip"
+                    file_name=os.path.basename(
+                        st.session_state["zip_path"]
+                    ),
+                    mime="application/zip",
+                    key="download_project_zip"
                 )
-                
-                if "report_content" in st.session_state:
-                    st.download_button(
-                        label="분석 리포트 다운로드 (.md)",
-                        data=st.session_state["report_content"],
-                        file_name="request_analysis_report.md",
-                        mime="text/markdown",
-                        key="download_analysis_report_after_skeleton"
-                    )
+
+        # 분석 리포트 다운로드 버튼
+        if "report_content" in st.session_state:
+
+            st.download_button(
+                label="분석 리포트 다운로드 (.md)",
+                data=st.session_state["report_content"],
+                file_name="request_analysis_report.md",
+                mime="text/markdown",
+                key="download_analysis_report"
+            )
 
         st.markdown("## 3. 누락 검사")
         st.markdown(st.session_state["missing"])
