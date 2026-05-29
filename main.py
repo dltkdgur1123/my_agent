@@ -70,7 +70,6 @@ with tab1:
     if "analysis" in st.session_state:
         
 
-
         if "project_type" in st.session_state:
             st.markdown("## 0. 프로젝트 유형 분석")
             st.markdown(st.session_state["project_type"])
@@ -101,12 +100,14 @@ with tab1:
                     mime="application/zip"
                 )
                 
-            st.download_button(
-                label="분석 리포트 다운로드 (.md)",
-                data=st.session_state["report_content"],
-                file_name="request_analysis_report.md",
-                mime="text/markdown"
-            )
+                if "report_content" in st.session_state:
+                    st.download_button(
+                        label="분석 리포트 다운로드 (.md)",
+                        data=st.session_state["report_content"],
+                        file_name="request_analysis_report.md",
+                        mime="text/markdown",
+                        key="download_analysis_report_after_skeleton"
+                    )
 
         st.markdown("## 3. 누락 검사")
         st.markdown(st.session_state["missing"])
