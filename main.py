@@ -82,7 +82,7 @@ with tab1:
                 label="분석 리포트 다운로드 (.md)",
                 data=st.session_state["report_content"],
                 file_name="request_analysis_report.md",
-                mime="text/markdown"
+                mime="text/markdown",
                 key="download_analysis_report"
             )
 
