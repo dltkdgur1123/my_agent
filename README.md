@@ -1,10 +1,13 @@
+🚀 **[My Agent 바로 사용하기](https://myagent-hyoku.streamlit.app/)**  
+https://myagent-hyoku.streamlit.app/
+
 <img src="./docs/assets/readme/01-hero-overview.svg" width="100%" alt="My Agent — 외주 개발 준비와 코드 문서화를 돕는 AI 도구" />
 
 # My Agent · 외주 개발 에이전트
 
 📌 프로젝트 유형 : 요구사항 분석·프로젝트 뼈대 생성·코드 문서화 도구  
 🧩 구성 : Python · Streamlit · OpenAI API  
-🔎 공개 코드 기준 : 로컬 실행형 프로토타입
+🔎 프로젝트 상태 : Streamlit 배포 프로토타입 · 로컬 실행 지원
 
 > 클라이언트의 요청을 개발 To Do와 추천 파일 구조로 정리하고, 프로젝트 뼈대 ZIP을 생성하는 도구입니다. 기능별 구현 가이드를 확인하거나, 작업한 프로젝트 ZIP을 올려 코드 설명과 포트폴리오 작업일지 초안을 만들 수 있습니다.
 >
